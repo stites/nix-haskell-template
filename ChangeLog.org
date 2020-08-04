@@ -1,0 +1,3 @@
+# Changelog for clight
+
+## Unreleased changes

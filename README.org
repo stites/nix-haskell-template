@@ -1,0 +1,2 @@
+* clight-cli
+A simple CLI to interface with dbus.
