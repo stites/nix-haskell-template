@@ -6,11 +6,16 @@
 
 package = clight-cli
 
-
 lib:
 	nix-build -A $(package).components.library
 
 exe:
-	nix-build -A $(package).components.exe.$(package)
+	nix-build -A $(package).components.exes.$(package)
+
+release:
+	nix-build ./release.nix
+
+development:
+	nix-build ./nix/development.nix
 
 # end

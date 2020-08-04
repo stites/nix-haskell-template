@@ -11,7 +11,7 @@ in
 
 }:
 let
-  release = import ./release.nix {inherit compiler sources haskell-nix pkgs;};
+  development = import ./nix/development.nix {inherit compiler sources haskell-nix pkgs;};
   hsPkgs = import ./default.nix { inherit compiler; };
 in
 hsPkgs.shellFor {
@@ -24,7 +24,7 @@ hsPkgs.shellFor {
 
   # Some you may need to get some other way.
   # buildInputs = with pkgs.haskellPackages;
-  buildInputs = with release; [gdb lldb hlint ghcid cabal-install ghcide];
+  buildInputs = with development; [gdb lldb hlint ghcid cabal-install ghcide];
 
   # probably unnessecary
   # ==================================
