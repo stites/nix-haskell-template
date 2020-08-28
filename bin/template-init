@@ -1,6 +1,113 @@
 #!/usr/bin/env bash
+if [[ ! -f ./bin/template-init ]]; then
+    echo "please run from project root!"
+    exit 1
+fi
 
-cat > envrc-new <<EOF
+packagename_default="defaulted"
+packagename="stuf"
+
+function readdefault {
+    local prompt="$1"
+    local default="$2"
+    declare -n global_var="$3"
+    if [[ -z "${!default}" ]]; then
+        read -p "$prompt: " -e -r input
+        global_var="$input"
+    else
+        read -p "$prompt (default: ${!default}): " -e -r input
+        if [[ -z "$input" ]]; then
+            global_var="${!default}"
+        else
+            global_var="$input"
+        fi
+    fi
+}
+
+function main {
+    packagename_default=""
+    packagename=""
+    readdefault "Package name" "packagename_default" "packagename"
+    packagepaths="${packagename//-/_}"
+
+    packagebinary_default="${packagename}"
+    packagebinary=""
+    readdefault "Package binary" "packagebinary_default" "packagebinary"
+
+    packagedescription_default=""
+    packagedescription=""
+    readdefault "Package description" "packagedescription_default" "packagedescription"
+
+    authorname_default="Sam Stites"
+    authorname=""
+    readdefault "Author name" "authorname_default" "authorname"
+
+    authorcontact_default="fnz@fgvgrf.vb (cipher:rot13)"
+    authorcontact=""
+    readdefault "Author contact" "authorcontact_default" "authorcontact"
+
+    githubowner_default="stites"
+    githubowner=""
+    readdefault "Github owner" "githubowner_default" "githubowner"
+
+    githubrepo_default="${packagename}"
+    githubrepo=""
+    readdefault "Github repo" "githubrepo_default" "githubrepo"
+
+    year=$(date +%Y)
+
+    echo "============================="
+    echo "|         Review            |"
+    echo "============================="
+    echo "Package name: ${packagename}"
+    echo "Package PATHS: ${packagepaths}"
+    echo "Package binary: ${packagebinary}"
+    echo "Package description: ${packagedescription}"
+    echo
+    echo "Author name: ${authorname}"
+    echo "Author contact: ${authorcontact}"
+    echo "Github owner: ${githubowner}"
+    echo "Github repo: ${githubrepo}"
+    echo "Copyright year: ${year}"
+
+    read -p "Correct? (y/n, default:y) " -r correct
+    case "$correct" in
+        "n")
+            echo "oops! please rerun this script"
+            return 1
+            ;;
+        "y"|*)  ;;
+    esac
+    replace "PACKAGE-NAME"        "packagename"
+    replace "PACKAGE-BINARY"      "packagebinary"
+    replace "PACKAGE-PATH"        "packagepaths"
+    replace "PACKAGE-DESCRIPTION" "packagedescription"
+    replace "AUTHOR-NAME"         "authorname"
+    replace "AUTHOR-CONTACT"      "authorcontact"
+    replace "GITHUB-OWNER"        "githubowner"
+    replace "GITHUB-REPO"         "githubrepo"
+    replace "YEAR"                "year"
+    mv PACKAGE-NAME.cabal ${packagename}.cabal
+
+    read -p "use lorri with direnv? " -r uselorri
+    case "${uselorri}" in
+        "n")
+            return 0
+            ;;
+        "y"|*)
+            cat > .envrc <<EOF
 eval "$(lorri direnv)"
 lorri init
 EOF
+            ;;
+    esac
+}
+
+function replace {
+    local templatevar="${1}"
+    local localvar="${2}"
+    \find ./ -type f -not -path './bin/*' -not -path './.git/*' -exec sed -i "s/${templatevar}/${localvar}/g" {} \;
+}
+
+main
+
