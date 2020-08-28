@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-if [[ ! -f ./bin/template-init ]]; then
+thisscript="template-init"
+
+if [[ ! -f "./bin/$thisscript" ]]; then
     echo "please run from project root!"
     exit 1
 fi
-
-packagename_default="defaulted"
-packagename="stuf"
 
 function readdefault {
     local prompt="$1"
@@ -89,16 +88,31 @@ function main {
     replace "YEAR"                "year"
     mv PACKAGE-NAME.cabal ${packagename}.cabal
 
-    read -p "use lorri with direnv? " -r uselorri
+    read -p "use lorri with direnv? (y/n, default:y) " -r uselorri
     case "${uselorri}" in
         "n")
             return 0
             ;;
         "y"|*)
-            cat > .envrc <<EOF
-eval "$(lorri direnv)"
-lorri init
-EOF
+            read -p "overwrite current PATH_add ./bin? (y/n, default:y)" -r usepathaddbin
+            case "${usepathaddbin}" in
+                "n") ;;
+                "y"|*) echo "" > .envrc ;;
+            esac
+            echo 'eval "$(lorri direnv)"' >> .envrc
+            echo 'lorri init' >> .envrc
+            ;;
+    esac
+    read -p "commit to git? (y/n, default:y) " -r addcommit
+    case "${addcommit}" in
+        "n")
+            return 0
+            ;;
+        "y"|*)
+            git add .
+            git rm "./bin/${thisscript}"
+            git commit -m 'replace template variables'
+            return 0
             ;;
     esac
 }
