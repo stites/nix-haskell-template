@@ -16,7 +16,7 @@ let
 in
 hsPkgs.shellFor {
   # Include only the *local* packages of your project.
-  packages = ps: [ps.clight-cli];
+  packages = ps: [ps.PACKAGE-NAME];
 
   # Builds a Hoogle documentation index of all dependencies,
   # and provides a "hoogle" command to search the index.

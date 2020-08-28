@@ -4,7 +4,7 @@ in
 { compiler ? defaults.compiler
 }:
 let
-  project-binary = "clight-cli";
+  project-binary = "PACKAGE-BINARY";
   hsPkgs = (import ./default.nix { inherit compiler; } );
 in
 {

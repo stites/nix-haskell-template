@@ -10,7 +10,7 @@ in
 pkgs.haskell-nix.project {
   # 'cleanGit' cleans a source directory based on the files known by git
   src = pkgs.haskell-nix.haskellLib.cleanGit {
-    name = "clight-cli";
+    name = "PACKAGE-NAME";
     src = ./.;
   };
   # For `cabal.project` based projects specify the GHC version to use.

@@ -4,7 +4,7 @@
 # @file
 # @version 0.1
 
-package = clight-cli
+package = PACKAGE-NAME
 
 lib:
 	nix-build -A $(package).components.library
