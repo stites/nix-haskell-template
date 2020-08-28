@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cat > envrc-new <<EOF
+eval "$(lorri direnv)"
+lorri init
+EOF
