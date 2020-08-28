@@ -7,7 +7,7 @@ if [[ ! -f "./bin/$thisscript" ]]; then
 fi
 
 if [[ ! -f "./PACKAGE-NAME.cabal" ]]; then
-    echo "[WARNING]"
+    echo "[ERROR]"
     echo "looks like you have already run this script, but ./bin/$thisscript has not been cleaned up!"
     echo "please check out your git history and make sure everything is kosher."
     exit 1
