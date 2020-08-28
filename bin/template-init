@@ -84,15 +84,15 @@ function main {
             ;;
         "y"|*)  ;;
     esac
-    replace "PACKAGE-NAME"        "packagename"
-    replace "PACKAGE-BINARY"      "packagebinary"
-    replace "PACKAGE-PATH"        "packagepaths"
-    replace "PACKAGE-DESCRIPTION" "packagedescription"
-    replace "AUTHOR-NAME"         "authorname"
-    replace "AUTHOR-CONTACT"      "authorcontact"
-    replace "GITHUB-OWNER"        "githubowner"
-    replace "GITHUB-REPO"         "githubrepo"
-    replace "YEAR"                "year"
+    replace "PACKAGE-NAME"        "${packagename}"
+    replace "PACKAGE-BINARY"      "${packagebinary}"
+    replace "PACKAGE-PATH"        "${packagepaths}"
+    replace "PACKAGE-DESCRIPTION" "${packagedescription}"
+    replace "AUTHOR-NAME"         "${authorname}"
+    replace "AUTHOR-CONTACT"      "${authorcontact}"
+    replace "GITHUB-OWNER"        "${githubowner}"
+    replace "GITHUB-REPO"         "${githubrepo}"
+    replace "YEAR"                "${year}"
     mv PACKAGE-NAME.cabal ${packagename}.cabal
 
     read -p "use lorri with direnv? (y/n, default:y) " -r uselorri
