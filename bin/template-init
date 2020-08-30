@@ -118,7 +118,7 @@ function main {
         "y"|*)
             git add .
             git rm "./bin/${thisscript}"
-            read -p "ammend previous commit? (y/n, default:n) " -r ammendcommit
+            read -p "ammend previous commit? requires force-push to origin. (y/n, default:n) " -r ammendcommit
             case "${ammendcommit}" in
                 "n") git commit --ammend ;;
                 "y"|*) git commit -m 'replace template variables' ;;
