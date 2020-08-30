@@ -118,10 +118,14 @@ function main {
         "y"|*)
             git add .
             git rm "./bin/${thisscript}"
-            git commit -m 'replace template variables'
-            return 0
+            read -p "ammend previous commit? (y/n, default:n) " -r ammendcommit
+            case "${ammendcommit}" in
+                "n") git commit --ammend ;;
+                "y"|*) git commit -m 'replace template variables' ;;
+            esac
             ;;
     esac
+    return 0
 }
 
 function replace {
