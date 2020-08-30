@@ -5,9 +5,9 @@ synopsis:       PACKAGE-DESCRIPTION
 description:    Please see the README on GitHub at <https://github.com/GITHUB-OWNER/GITHUB-REPO#readme>
 homepage:       https://github.com/GITHUB-OWNER/GITHUB-REPO#readme
 bug-reports:    https://github.com/GITHUB-OWNER/GITHUB-REPO/issues
-author:         AUTHOR
+author:         AUTHOR-NAME
 maintainer:     AUTHOR-CONTACT
-copyright:      Copyright: (c) YEAR AUTHOR
+copyright:      Copyright: (c) YEAR AUTHOR-NAME
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
