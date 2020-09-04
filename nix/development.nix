@@ -16,7 +16,7 @@ let
 in
 {
   inherit (pkgs) gdb;
-  inherit (unstable) hlint ghcid cabal-install;
+  inherit (unstable) hlint ghcid;
   lldb = pkgs.lldb_9;
   possibly = hsPkgs.possibly.components.all;
   ghcide = (import sources.ghcide-nix {})."ghcide-${compiler}";

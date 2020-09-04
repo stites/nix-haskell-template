@@ -24,7 +24,7 @@ hsPkgs.shellFor {
 
   # Some you may need to get some other way.
   # buildInputs = with pkgs.haskellPackages;
-  buildInputs = with development; [gdb lldb hlint ghcid cabal-install ghcide];
+  buildInputs = with development; [gdb lldb hlint ghcid ghcide];
 
   # probably unnessecary
   # ==================================
