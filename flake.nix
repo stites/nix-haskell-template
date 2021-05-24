@@ -15,23 +15,29 @@
 
   outputs = inputs@{ self, nixpkgs, haskell-nix, utils, devshell, ... }:
     let
-      name = "atomic";
-      compiler = "ghc810"; # Not used for `stack.yaml` based projects.
+      name = "PACKAGE-NAME";
+      compiler = "ghc8104"; # Not used for `stack.yaml` based projects.
 
       # This overlay adds our project to pkgs
       project-overlay = final: prev: {
-        "${name}Project" =
-          final.haskell-nix.project' {
-
-            # 'cleanGit' cleans a source directory based on the files known by git
-            src = prev.haskell-nix.haskellLib.cleanGit {
-              name = "PACKAGE-NAME";
-              src = ./.;
-            };
-
-            compiler-nix-name = compiler; # Not used for `stack.yaml` based projects.
-            projectFileName = "cabal.project"; # Not used for `stack.yaml` based projects.
+        "${name}Project" = let
+          supported-compilers = builtins.fetchurl {
+            url = "https://raw.githubusercontent.com/input-output-hk/haskell.nix/master/docs/reference/supported-ghc-versions.md";
+            sha256 = "sha256:1b1h8l6rbg9f31i8pmaskg95by1p6jjlribkyyklah0zyb8yv8aa";
           };
+
+          in
+            #assert compiler == supported-compilers;
+            final.haskell-nix.project' {
+              # 'cleanGit' cleans a source directory based on the files known by git
+              src = prev.haskell-nix.haskellLib.cleanGit {
+                inherit name;
+                src = ./.;
+              };
+
+              compiler-nix-name = compiler; # Not used for `stack.yaml` based projects.
+              projectFileName = "cabal.project"; # Not used for `stack.yaml` based projects.
+            };
       };
     in
       { overlay = final: prev: {
@@ -43,7 +49,7 @@
             inherit system;
             overlays = [
               devshell.overlay
-              haskell-nix.overlays.combined # haskellNix.overlay
+              haskell-nix.overlay
               (final: prev: {
                 haskell-nix = prev.haskell-nix // {
                   sources = prev.haskell-nix.sources // {
@@ -64,7 +70,7 @@
 
           # This is used by `nix develop .` to open a shell for use with
           # `cabal`, `hlint` and `haskell-language-server`
-          devShell = pkgs.haptureProject.shellFor {
+          devShell = pkgs."${name}Project".shellFor {
             # Some you may need to get some other way.
             # buildInputs = with pkgs.haskellPackages;
             buildInputs = with pkgs; [gdb lldb];
